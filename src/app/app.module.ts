@@ -6,12 +6,17 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
-import { CreateCardPage } from '../pages/card/card';
+import { CreateCardPage } from '../pages/card/create';
+import { PayPage } from '../pages/pay/pay';
+
+
+
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from '@angular/http';
-
+import { IonicStorageModule } from '@ionic/storage';
+import { GlobalService } from '../globalService/globalService';
 
 @NgModule({
   declarations: [
@@ -19,12 +24,14 @@ import { HttpModule } from '@angular/http';
     HomePage,
     ListPage,
     LoginPage,
-    CreateCardPage
+    CreateCardPage,
+    PayPage
   ],
   imports: [
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -32,12 +39,14 @@ import { HttpModule } from '@angular/http';
     HomePage,
     ListPage,
     LoginPage,
-    CreateCardPage
+    CreateCardPage,
+    PayPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     HttpModule,
+    IonicStorageModule,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

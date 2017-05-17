@@ -1,18 +1,26 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { Http, Headers } from '@angular/http';
+import { PayPage } from '../pay/pay';
 import 'rxjs/add/operator/map';
+
 
 @Component({
     selector: 'page-card',
-    templateUrl: 'card.html'
+    templateUrl: 'create.html',
 })
 export class CreateCardPage {
 
     guestName: string = '';
     phoneNumber: string = '';
+    public cardCode : string = null;
 
-    constructor(public http: Http, public navParams: NavParams, public navCtrl: NavController, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {}
+    constructor(public http: Http,
+                public navCtrl: NavController,
+                public alertCtrl: AlertController,
+                public loadingCtrl: LoadingController,
+                public storage: Storage) {}
 
     doPostCard() {
         // set URL for http service
@@ -28,16 +36,15 @@ export class CreateCardPage {
             phoneNumber: this.phoneNumber
         });
 
+
         // validate input
         if (this.guestName === '' || this.guestName === '') {
-            let arlert = this.alertCtrl.create({
-                title: 'Error',
-                subTitle: 'Guest name or Phone number is empty',
-                buttons: ['OK']
-            });
+            // set alert
+            let arlert = this.createMessage('Error', 'Guest name or Phone number is empty');
             arlert.present();
             return;
         }
+
         // creating loading mask
         let loadingMask = this.loadingCtrl.create({
             content: 'Creating...'
@@ -51,32 +58,37 @@ export class CreateCardPage {
                 if (data.status === '0') {
 
                     loadingMask.dismiss();
-
-                    let arlert = this.alertCtrl.create({
-                        title: 'OK',
-                        subTitle: data.data.cardCode,
-                        buttons: ['OK']
-                    });
-
-                    arlert.present();
+                    // set key, value for localStorage
+                    console.log('11');
+                    this.cardCode = data.data.cardCode;
                 } else {
                     // TO-DO: switch case for data.status to get error
                     // call function createMessage
+                    loadingMask.dismiss();
+                    let arlert = this.createMessage('Error', data.message);
+                    arlert.present();
                 }
 
             }, err => {
-                let arlert = this.alertCtrl.create({
-                        title: 'Error',
-                        subTitle: 'Time out',
-                        buttons: ['OK']
-                    });
-
-                    arlert.present();
-
+                loadingMask.dismiss();
+                let arlert = this.createMessage('Error', 'Time out');
+                arlert.present();
             });
     };
 
-    createMessage(string) {
 
+    createMessage(title, subTitle) {
+
+        let arlert = this.alertCtrl.create({
+            title: title,
+            subTitle: subTitle,
+            buttons: ['OK']
+        });
+
+        return arlert;
+    }
+
+    doRedirect(){
+        this.navCtrl.setRoot(PayPage);
     }
 }

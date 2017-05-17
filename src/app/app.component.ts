@@ -2,13 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { HttpModule } from '@angular/http';
 
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
-import { CreateCardPage } from '../pages/card/card';
-
-import { HttpModule } from '@angular/http';
+import { CreateCardPage } from '../pages/card/create';
+import { CardCompletePage } from '../pages/cardComplete/complete';
+import { PayPage } from '../pages/pay/pay';
 
 @Component({
   templateUrl: 'app.html'
@@ -16,7 +17,7 @@ import { HttpModule } from '@angular/http';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage = CreateCardPage;
+  rootPage = PayPage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -28,7 +29,7 @@ export class MyApp {
       { title: 'Home', component: HomePage },
       { title: 'List', component: ListPage },
       { title: 'Login', component: LoginPage },
-      { title: 'CreateCardPage', component: CreateCardPage }
+      { title: 'Create Card', component: CreateCardPage }
     ];
 
   }
