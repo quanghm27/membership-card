@@ -15,6 +15,7 @@ export class CreateCardPage {
     guestName: string = '';
     phoneNumber: string = '';
     public cardCode : string = null;
+    public shopId : string;
 
     constructor(public http: Http,
                 public navCtrl: NavController,
@@ -30,8 +31,13 @@ export class CreateCardPage {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
+        this.storage.get('shopId').then((val) =>{
+            this.shopId = val
+        });
+        
         // set data for http service
         let data = JSON.stringify({
+            shopId: this.shopId,
             guestName: this.guestName,
             phoneNumber: this.phoneNumber
         });
